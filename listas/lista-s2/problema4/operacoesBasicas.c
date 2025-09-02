@@ -18,3 +18,4 @@ int main(){
 	printf("SOMA: %d\nDIFERENÇA: %d\nProduto: %d\nDIVISÃO REAL: %.02f\nRESTO DA DIVISÃO INTEIRA: %d\nMÉDIA ARITMÉTICA: %.02f\n", soma, diferenca, produto, divReal, resto, media);
 	return 0;
 }
+
