@@ -1,0 +1,6 @@
+vai imprimir n linhas, com a primeira linha sendo 1, a segunda 1 2 até até a linha 1 ... n.
+ex: n = 3
+
+1
+1 2
+1 2 3
