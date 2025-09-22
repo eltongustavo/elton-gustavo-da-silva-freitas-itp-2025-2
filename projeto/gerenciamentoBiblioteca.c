@@ -1,5 +1,13 @@
 #include <stdio.h>
 
+struct livro
+{
+    char titulo[101];
+    int anoLancamento;
+    char nomePessoa[51];
+};
+
+
 int main() {
     int opcao;
     while (1) {
