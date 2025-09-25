@@ -51,7 +51,6 @@ void cadastrarLivro()
     printf("Livro cadastrado com sucesso!\n\n");
 }
 
-
 void listarLivros()
 {
     for (int i = 0; i < qtdLivros; i++) {
@@ -111,7 +110,6 @@ void alugarLivro()
     }
 }
 
-
 int main() {
     int opcao;
 
@@ -142,9 +140,7 @@ int main() {
         }
         else {
             printf("Opção Inválida!\n");
-        }      
-        
+        }        
     }
-
     printf("Sistema encerrado!\n");
 }
