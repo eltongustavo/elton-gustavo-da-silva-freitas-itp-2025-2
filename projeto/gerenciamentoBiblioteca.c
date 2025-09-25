@@ -1,5 +1,6 @@
-#include <stdio.h>
-#include <string.h>
+#include <stdio.h>  
+#include <string.h>  
+#include <stdlib.h>  
 
 struct livro
 {
@@ -13,20 +14,43 @@ int qtdLivros = 0;
 
 void cadastrarLivro()
 {
-    do{
+    struct livro l; 
+
+    do {
+        
         printf("Título: ");
-        fgets(biblioteca[qtdLivros].titulo, 101, stdin);
-        biblioteca[qtdLivros].titulo[strcspn(biblioteca[qtdLivros].titulo, "\n")] = '\0';
+        fgets(l.titulo, sizeof(l.titulo), stdin);
+        l.titulo[strcspn(l.titulo, "\n")] = '\0';
 
+        if (strlen(l.titulo) == 0) {
+            printf("Erro: o título não pode ser vazio!\n");
+            continue;
+        }
+
+        
+        char anoBuf[16];
         printf("Ano Lançamento: ");
-        scanf("%d", &biblioteca[qtdLivros].anoLancamento);
-        getchar();
+        fgets(anoBuf, sizeof(anoBuf), stdin);
+        l.anoLancamento = atoi(anoBuf);
 
-        strcpy(biblioteca[qtdLivros].nomePessoa, "");
-    } while ((sizeof(biblioteca[qtdLivros].titulo) <= 100 && sizeof(biblioteca[qtdLivros].titulo) > 0) || 
-            (&biblioteca[qtdLivros].anoLancamento <= 0));
-    qtdLivros += 1;
+        if (l.anoLancamento <= 0) {
+            printf("Erro: o ano deve ser maior que zero!\n");
+            continue;
+        }
+
+        break; 
+
+    } while (1);
+
+    
+    l.nomePessoa[0] = '\0';
+
+    biblioteca[qtdLivros] = l;
+    qtdLivros++;
+
+    printf("Livro cadastrado com sucesso!\n\n");
 }
+
 
 void listarLivros()
 {
@@ -46,6 +70,48 @@ void listarLivros()
     }
 }
 
+void alugarLivro()
+{
+    char nome[53];
+    int opcaoLivro;
+
+    printf("Digite seu nome: ");
+    fgets(nome, sizeof(nome), stdin);
+    nome[strcspn(nome, "\n")] = '\0'; 
+
+    printf("Livros disponíveis: \n");
+    printf("[0]. Para sair\n");
+
+    for (int i = 0; i < qtdLivros; i++) {
+        printf("[%d]. %s, %d", i+1, biblioteca[i].titulo, biblioteca[i].anoLancamento);
+        if (strlen(biblioteca[i].nomePessoa) > 0) {
+            printf(" - %s", biblioteca[i].nomePessoa);
+        }
+        printf("\n");
+    }
+
+    printf("\nEscolha qual livro você quer alugar pelo índice: ");
+    scanf("%d", &opcaoLivro);
+    getchar(); 
+
+    if (opcaoLivro == 0) {
+        printf("Saindo... Voltando ao menu principal!\n");
+    }
+    else if (opcaoLivro > 0 && opcaoLivro <= qtdLivros) {
+        if (strlen(biblioteca[opcaoLivro - 1].nomePessoa) == 0) {
+            strcpy(biblioteca[opcaoLivro - 1].nomePessoa, nome);
+            printf("Alugando livro: %s para %s\n\n", biblioteca[opcaoLivro - 1].titulo, biblioteca[opcaoLivro - 1].nomePessoa);
+        }
+        else {
+            printf("Esse livro já está alugado!\n\n");
+        }
+    }
+    else {
+        printf("Opção inválida!\n");
+    }
+}
+
+
 int main() {
     int opcao;
 
@@ -60,11 +126,13 @@ int main() {
         scanf("%d", &opcao);
         getchar();
 
+        printf("\n");
+
         if (opcao == 1) {
             cadastrarLivro();
         }
         else if (opcao == 2) {
-            /* code */
+            alugarLivro();
         }
         else if (opcao == 3) {
             listarLivros();
@@ -73,7 +141,7 @@ int main() {
             break;
         }
         else {
-            printf("Opção Inválida!");
+            printf("Opção Inválida!\n");
         }      
         
     }
