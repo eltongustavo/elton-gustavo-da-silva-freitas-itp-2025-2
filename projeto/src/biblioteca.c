@@ -2,6 +2,7 @@
 #include <string.h>  
 #include <stdlib.h>  
 
+//estrutura do livro com os 3 atributos que serão utilizados durante a execução
 struct livro
 {
     char titulo[103];
@@ -9,15 +10,23 @@ struct livro
     char nomePessoa[53];
 };
 
-struct livro biblioteca[100]; 
-int qtdLivros = 0;
 
-void cadastrarLivro()
+struct livro biblioteca[100]; //Vetor de livros com tamanho máximo de 100
+int qtdLivros = 0; //variável global que representa a quantidade de livros cadastrados no sistema
+
+
+void cadastrarLivro() 
 {
+    /*
+    Função que recebe de entrada do usuário título e Ano de lançamento do livro e
+    testa se ambos são válidos e depois adiciona um novo livro no vetor de livros
+    */
+
     struct livro l; 
 
     do {
         
+        //Recebe entrada do usuário para título e testa se não é vazia
         printf("Título: ");
         fgets(l.titulo, sizeof(l.titulo), stdin);
         l.titulo[strcspn(l.titulo, "\n")] = '\0';
@@ -27,7 +36,7 @@ void cadastrarLivro()
             continue;
         }
 
-        
+        //Recebe entrada do usuário para ano de lançamento e testa se não é negativo
         char anoBuf[16];
         printf("Ano Lançamento: ");
         fgets(anoBuf, sizeof(anoBuf), stdin);
@@ -45,7 +54,7 @@ void cadastrarLivro()
     
     l.nomePessoa[0] = '\0';
 
-    biblioteca[qtdLivros] = l;
+    biblioteca[qtdLivros] = l; //adiciona o livro no vetor de livros
     qtdLivros++;
 
     printf("Livro cadastrado com sucesso!\n\n");
@@ -53,6 +62,8 @@ void cadastrarLivro()
 
 void listarLivros()
 {
+    //Função que lista todos os livros com um for que percorre da posição 0 até a quantidade global de livros adicionados
+
     for (int i = 0; i < qtdLivros; i++) {
 
         printf("Título: %s\n", biblioteca[i].titulo);
@@ -71,6 +82,10 @@ void listarLivros()
 
 void alugarLivro()
 {
+    /*
+    Função que recebe o nome da pessoa que irá alugar, e qual livro ela quer,
+    e tenta alugar o livro escolhido para ela.
+    */
     char nome[53];
     int opcaoLivro;
 
@@ -78,6 +93,8 @@ void alugarLivro()
     fgets(nome, sizeof(nome), stdin);
     nome[strcspn(nome, "\n")] = '\0'; 
 
+
+    //Mostra todos os livros e se estão alugados
     printf("Livros disponíveis: \n");
     printf("[0]. Para sair\n");
 
@@ -89,6 +106,7 @@ void alugarLivro()
         printf("\n");
     }
 
+    //Recebe a entrada de qual livro o usuário escolheu
     printf("\nEscolha qual livro você quer alugar pelo índice: ");
     scanf("%d", &opcaoLivro);
     getchar(); 
@@ -97,6 +115,7 @@ void alugarLivro()
         printf("Saindo... Voltando ao menu principal!\n");
     }
     else if (opcaoLivro > 0 && opcaoLivro <= qtdLivros) {
+        //testa se o livro já está alugado ou não, e se estiver livre, aluga para o usuário
         if (strlen(biblioteca[opcaoLivro - 1].nomePessoa) == 0) {
             strcpy(biblioteca[opcaoLivro - 1].nomePessoa, nome);
             printf("Alugando livro: %s para %s\n\n", biblioteca[opcaoLivro - 1].titulo, biblioteca[opcaoLivro - 1].nomePessoa);
@@ -111,6 +130,10 @@ void alugarLivro()
 }
 
 int main() {
+    /*
+    Função que tem um While infinito com um menu, e dependendo da escolha do usuário,
+    chama as funções correspondentes.
+    */
     int opcao;
 
     while (1) {
